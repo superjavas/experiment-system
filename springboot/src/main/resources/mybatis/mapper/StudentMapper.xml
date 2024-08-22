@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="springboot06.work.mapper.StudentMapper">
+    <resultMap id="BaseResultMap" type="Student">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="sname" property="sname"/>
+        <result column="cname" property="cname"/>
+        <result column="password" property="password"/>
+        <result column="major" property="major"/>
+        <result column="picture" property="picture"/>
+        <result column="level" property="level"/>
+    </resultMap>
+<!--    <insert id="addStudent" parameterType="Student">-->
+<!--        insert into student (id,username,sname,cname,school,password,level,major,college,sid) values (#{id},#{username},#{sname},#{cname},#{school},#{password},#{level},#{major},#{college},1)-->
+<!--    </insert>-->
+    <insert id="addAllStudent" >
+        insert into student (id,username,sanme,cname,password,school,major,college,level)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.username},#{item.sanme},#{item.cname},#{item.password},#{item.school},#{item.major},#{item.college},#{item.level})
+        </foreach>
+    </insert>
+    <select id="selectId" resultType="int" parameterType="String">
+        select id from student where username = #{username}
+    </select>
+
+    <update id="updateStudentPassword" parameterType="Student">
+        update student set password = #{password} where id = #{id}
+    </update>
+    <select id="selectPassword" parameterType="String" resultType="String">
+        select password from student where username = #{username}
+    </select>
+    <update id="updateStudentPicture" parameterType="Student">
+        update student set picture = #{picture} where id = #{id}
+    </update>
+    <select id="selectSchoolStudent" parameterType="Student" resultType="Student">
+        select * from student where school = #{school}
+    </select>
+    <select id="selectClassStudent" resultType="Student">
+        select id,sname,cname,school,major,college from student where cname = #{cname}
+    </select>
+    <select id="allStudent" resultType="Student">
+  	select id,sname,cname,school,major,college from student where cname=#{cname};
+  </select>
+    <delete id="deleteStudent" parameterType="Student">
+        delete from student where id
+        in
+        <foreach collection="id" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <update id="updateStudent" parameterType="HashMap">
+  	update student set id=#{id},sname=#{sname},cname=#{cname},major=#{major},college=#{college},school=#{school} where id=#{oldid}
+  </update>
+
+
+
+
+<!--    下划线-->
+    <select id="findAll" resultType="springboot06.work.pojo.Student">
+        select * from `student`
+        where sid=1 and
+        <if test="username!=null">
+            username like '%' #{username} '%' and
+        </if>
+        <if test="sname!=null">
+            sname like '%' #{sname} '%' and
+        </if>
+        1=1
+    </select>
+    <select id="selectById" resultType="Student">
+        select s.username,s.sname,s.classes,s.major,u.picture,u.level,u.id from
+        student s,
+        user u
+          where s.username=u.username and s.username = #{username} and s.sid=1
+    </select>
+    <insert id="addStudents" parameterType="springboot06.work.pojo.Student">
+        insert into `student`(`username`,`sname`,`classes`,`major`,`level`,`gender`,sid)
+        values(#{username},#{sname},#{classes},#{major},2,#{gender},1)
+    </insert>
+    <delete id="deleteStu" parameterType="String">
+        delete from `student` where username=#{username}
+    </delete>
+    <update id="updateById" parameterType="springboot06.work.pojo.Student" >
+        update `student` set `sname`=#{sname},`gender`=#{gender},`classes`=#{classes},`major`=#{major} where username=#{username}
+    </update>
+    <select id="findExpAll" resultType="springboot06.work.pojo.Student">
+        select * from `student`
+        where cname=#{cname} and tid=#{tid} and
+        <if test="username!=null">
+            username like '%' #{username} '%' and
+        </if>
+        <if test="sname!=null">
+            sname like '%' #{sname} '%' and
+        </if>
+        1=1
+
+    </select>
+    <insert id="addExpStudent" parameterType="springboot06.work.pojo.Student">
+        insert into `student`(`username`,`sname`,`classes`,`major`,`level`,`gender`,`tid`,`cname`)
+        values(#{username},#{sname},#{classes},#{major},2,#{gender},#{tid},#{cname})
+    </insert>
+    <update id="teacherUpdateById" parameterType="springboot06.work.pojo.Student" >
+        update `student` set `sname`=#{sname},`gender`=#{gender},`classes`=#{classes},`major`=#{major} where username=#{username} and tid=#{tid} and cname=#{cname}
+    </update>
+    <delete id="teacherdeleteStu" parameterType="springboot06.work.pojo.Student">
+        delete from `student` where username=#{username} and tid=#{tid} and cname=#{cname}
+    </delete>
+    <select id="teacherselectStu" resultType="springboot06.work.pojo.Student">
+        select * from`student` where username=#{username} and tid=#{tid} and cname=#{cname}
+    </select>
+    <delete id="deleteExpStu" parameterType="String">
+        delete from `student` where cname=#{cname}
+    </delete>
+    <select id="selectCourse" resultType="String">
+        select cname from `student` where username=#{username} and tid is not null and cname is not null
+    </select>
+    <select id="getStudentsList" resultType="springboot06.work.pojo.Student">
+        select username,sname,gender,classes,major from `student` where sid=1
+    </select>
+    <select id="exportExpStudent" resultType="springboot06.work.pojo.Student">
+        select username,sname,gender,classes,major from `student` where tid=#{tid} and cname=#{cname}
+    </select>
+</mapper>

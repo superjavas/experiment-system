@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="springboot06.work.mapper.UserMapper">
+    <select id="queryUser" resultType="User">
+        select * from user
+    </select>
+
+    <update id="addSid" parameterType="User">
+        update user set sid = #{sid} where username = #{username}
+    </update>
+    <update id="addTid" parameterType="User">
+        update user set tid = #{tid} where username = #{username}
+    </update>
+
+
+    <update id="updateUserPassword" parameterType="User">
+        update user set password = #{password} where username = #{username}
+    </update>
+    <update id="updateUser" parameterType="User">
+        update user set username = #{username},password = #{password} where oid = #{oid}
+    </update>
+    <select id="selectPassword" parameterType="int" resultType="String">
+        select password from user where id = #{id}
+    </select>
+
+
+<!--***-->
+    <select id="login" resultType="User" parameterType="User">
+        select * from user where username = #{username} and password = #{password}
+    </select>
+    <update id="setPicture" parameterType="springboot06.work.req.PictureReq" >
+        update `user` set `picture`=#{picture} where username=#{username}
+    </update>
+    <insert id="addUser" parameterType="springboot06.work.pojo.User">
+        insert into `user`(`username`,`password`,`level`)
+        values(#{username},'123456',2)
+    </insert>
+    <insert id="addTeacherUser" parameterType="springboot06.work.pojo.User">
+        insert into `user`(`username`,`password`,`level`)
+        values(#{username},'123456',1)
+    </insert>
+    <delete id="deleteUser" parameterType="String">
+        delete from `user` where username=#{username}
+    </delete>
+
+    <update id="updatePassword" parameterType="User">
+        update user set password = #{password} where id = #{id}
+    </update>
+    <select id="findUserById" parameterType="int" resultType="User">
+        select * from user where id = #{id}
+    </select>
+    <select id="findUserByUsername" parameterType="String" resultType="User">
+        select * from user where username=#{username}
+    </select>
+</mapper>

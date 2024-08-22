@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="springboot06.work.mapper.GradeMapper">
+    <resultMap id="BaseResultMap" type="Grade">
+        <id column="id" property="id"/>
+        <result column="cname" property="cname"/>
+        <result column="sno" property="sno"/>
+        <result column="sname" property="sname"/>
+        <result column="time" property="time"/>
+        <result column="grade" property="grade"/>
+    </resultMap>
+    <insert id="addStudentGrade" parameterType="Grade">
+        insert into grade (cname,sno,sname,time,grade) values (#{cname},#{sno},#{sname},#{time},#{grade})
+    </insert>
+    <select id="findAllGrade" resultType="springboot06.work.pojo.Grade">
+        select * from `grade`
+        where cname=#{cname} and
+        <if test="sno!=null">
+            sno like '%' #{sno} '%' and
+        </if>
+        <if test="sname!=null">
+            sname like '%' #{sname} '%' and
+        </if>
+        1=1
+    </select>
+    <select id="getGrade" resultType="springboot06.work.pojo.Grade">
+        select * from grade where sno=#{sno} and cname=#{cname}
+    </select>
+    <update id="updateGrade" parameterType="springboot06.work.pojo.Grade" >
+        update `grade` set grade=#{grade} where id=#{id}
+    </update>
+    <delete id="deleteGrade" parameterType="int">
+        delete from `grade` where id=#{id}
+    </delete>
+</mapper>

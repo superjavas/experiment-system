@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="springboot06.work.mapper.TeacherMapper">
+    <select id="selectId" resultType="int" parameterType="String">
+        select id from teacher where username = #{username}
+    </select>
+    <update id="updateTeacherPassword" parameterType="Teacher">
+        update teacher set password = #{password} where id = #{id}
+    </update>
+    <select id="selectPassword" parameterType="String" resultType="String">
+        select password from teacher where username = #{username}
+    </select>
+    <update id="updateTeacherPicture" parameterType="Teacher">
+        update teacher set picture = #{picture} where id = #{id}
+    </update>
+    <select id="selectSchoolTeacher" parameterType="Teacher" resultType="Teacher">
+        select * from teacher where school = #{school}
+    </select>
+    <select id="selectSchool" resultType="String">
+        select school from teacher where id = #{id}
+    </select>
+
+<!--*****-->
+    <select id="selectById" resultType="Teacher">
+        select t.username,t.tname,u.level,u.picture,u.id from
+        teacher t,
+        user u
+          where t.username=u.username and t.username = #{username}
+    </select>
+    <select id="findAllTeachers" resultType="springboot06.work.pojo.Teacher">
+        select * from `teacher`
+        where
+        <if test="username!=null">
+            username like '%' #{username} '%' and
+        </if>
+        <if test="tname!=null">
+            tname like '%' #{tname} '%' and
+        </if>
+        1=1
+    </select>
+    <insert id="addTeacher" parameterType="springboot06.work.pojo.Teacher">
+        insert into `teacher`(`username`,`tname`,`level`)
+        values(#{username},#{tname},1)
+    </insert>
+    <update id="updateTeacher" parameterType="springboot06.work.pojo.Teacher" >
+        update `teacher` set `tname`=#{tname} where username=#{username}
+    </update>
+    <delete id="deleteTeacher" parameterType="String">
+        delete from `teacher` where username=#{username}
+    </delete>
+    <select id="getTeacherList" resultType="springboot06.work.pojo.Teacher">
+        select username,tname from `teacher`
+    </select>
+</mapper>
+
+
+
+<!--******-->
+
