@@ -2,7 +2,7 @@
 
 #### Description
 虚拟仿真实验平台是⼀个基于计算机组成原理的双端⼝实验的线上实验平台。学⽣可以通过此平台在线上模拟双端⼝存储器实验的读写操作，并填写相应的实验报告并⽣成成绩。⽽⽼师通过此平台来创建实验的班级、对学⽣的管理等功能。
-
+测试
 #### Software Architecture
 Software architecture description
 
